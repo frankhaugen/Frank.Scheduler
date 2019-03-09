@@ -1,2 +1,6 @@
-# scheduled-job
-Having gone through different ways of doing scheduled jobs in .net core, I've finally found something simple and easy, and so I want give people an example
+## Good to know
+This is created using .Net core 3.0 Preview and C# 8.0 Beta, so breaking changes might have occured between when this was made and when you attempted to use it.
+
+## How to use this
+Just clone the project and do the changes you need to use it as your own.
+
