@@ -4,3 +4,5 @@ This is created using .Net core 3.0 Preview and C# 8.0 Beta, so breaking changes
 ## How to use this
 Just clone the project and do the changes you need to use it as your own.
 
+## What makes this work
+The Nuget Package "CronQuery". It's a really nifty little nugget of gold
