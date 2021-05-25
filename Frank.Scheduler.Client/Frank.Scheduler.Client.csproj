@@ -9,4 +9,8 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Azure.ServiceBus" Version="5.1.3" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Frank.Scheduler.Models\Frank.Scheduler.Models.csproj" />
+    </ItemGroup>
 </Project>
