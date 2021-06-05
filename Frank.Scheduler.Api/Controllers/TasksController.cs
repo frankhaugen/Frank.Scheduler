@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 namespace Frank.Scheduler.Api.Controllers
 {
     [ApiController]
-    [Route("health")]
-    public class HealthController : ControllerBase
+    [Route("scheduler/tasks")]
+    public class TasksController : ControllerBase
     {
         [HttpGet]
-        public async Task<IActionResult> GetHealth()
+        public async Task<IActionResult> GetTasks()
         {
             return Ok();
         }

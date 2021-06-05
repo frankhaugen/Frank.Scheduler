@@ -9,9 +9,4 @@ namespace Frank.Scheduler.Data.Entities
         public string MessageLabel { get; set; }
         public DateTime LastRegistration { get; set; }
     }
-
-    public class ScheduledTask
-    {
-
-    }
 }

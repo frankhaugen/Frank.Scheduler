@@ -8,12 +8,21 @@
         }
     },
     "profiles": {
-        "Frank.Scheduler.Api": {
+        "Frank.Scheduler.Api (Development)": {
             "commandName": "Project",
             "launchBrowser": true,
             "launchUrl": "swagger",
             "environmentVariables": {
                 "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "applicationUrl": "http://localhost:5110"
+        },
+        "Frank.Scheduler.Api (Test)": {
+            "commandName": "Project",
+            "launchBrowser": true,
+            "launchUrl": "swagger",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Test"
             },
             "applicationUrl": "http://localhost:5110"
         }

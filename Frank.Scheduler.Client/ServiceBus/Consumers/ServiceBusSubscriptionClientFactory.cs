@@ -1,9 +1,9 @@
-﻿using Microsoft.Azure.ServiceBus;
-using Microsoft.Azure.ServiceBus.Management;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Microsoft.Azure.ServiceBus;
+using Microsoft.Azure.ServiceBus.Management;
 
-namespace Frank.Scheduler.Api.ServiceBus
+namespace Frank.Scheduler.Client.ServiceBus.Consumers
 {
     public class ServiceBusSubscriptionClientFactory : IServiceBusSubscriptionClientFactory
     {

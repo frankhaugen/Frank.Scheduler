@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace Frank.Scheduler.Api.ServiceBus
 {
-    public class ApplicationRegistrationConsumer : BackgroundService
+    public class ScheduledTaskCallbackConsumer : BackgroundService
     {
-        private readonly ILogger<ApplicationRegistrationConsumer> _logger;
+        private readonly ILogger<ScheduledTaskCallbackConsumer> _logger;
         private readonly IServiceBusSubscriptionClientFactory _clientFactory;
         private readonly IServiceScopeFactory _scopeFactory;
         private readonly ServiceBusConfiguration _options;
 
         private ISubscriptionClient _subscriptionClient;
 
-        public ApplicationRegistrationConsumer(ILogger<ApplicationRegistrationConsumer> logger, IServiceBusSubscriptionClientFactory serviceBusSubscriptionClientFactory, IOptions<ServiceBusConfiguration> options, IServiceScopeFactory scopeFactory)
+        public ScheduledTaskCallbackConsumer(ILogger<ScheduledTaskCallbackConsumer> logger, IServiceBusSubscriptionClientFactory serviceBusSubscriptionClientFactory, IOptions<ServiceBusConfiguration> options, IServiceScopeFactory scopeFactory)
         {
             _logger = logger;
             _clientFactory = serviceBusSubscriptionClientFactory;
