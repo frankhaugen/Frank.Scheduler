@@ -1,5 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using CronQuery.Mvc.DependencyInjection;
+using Frank.Scheduler.Api.Jobs;
+using Frank.Scheduler.Api.ServiceBus;
+using Frank.Scheduler.Data;
+using Frank.Scheduler.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,6 +25,32 @@ namespace Frank.Scheduler.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Scheduled jobs
+            services.AddCronQuery(Configuration.GetSection("CronQuery"));
+            services.AddScoped<SchedulerJob>();
+
+            // Service bus listeners
+            services.AddHostedService<ApplicationRegistrationConsumer>();
+            services.AddHostedService<ScheduledTaskCallbackConsumer>();
+
+            // Services
+            services.AddScoped<IScheduledTaskService, ScheduledTaskService>();
+            services.AddScoped<IServiceBusService, ServiceBusService>();
+
+            // Service bus
+            services.Configure<ServiceBusConfiguration>(Configuration.GetSection(nameof(ServiceBusConfiguration)));
+
+            // Database
+            services.AddDbContext<DataContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("SqlDatabase"));
+#if DEBUG
+                options.EnableDetailedErrors();
+                options.EnableSensitiveDataLogging();
+#endif
+            });
+
+            // MVC
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

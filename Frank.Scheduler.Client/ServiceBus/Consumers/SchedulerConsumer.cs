@@ -1,5 +1,7 @@
-﻿using Frank.Scheduler.Client.ServiceBus.Extensions;
+﻿using Frank.Scheduler.Client.Configuration;
+using Frank.Scheduler.Client.ServiceBus.Extensions;
 using Frank.Scheduler.Client.ServiceBus.Interfaces;
+using Frank.Scheduler.Client.ServiceBus.Producers;
 using Frank.Scheduler.Models.Messages;
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,21 +19,23 @@ namespace Frank.Scheduler.Client.ServiceBus.Consumers
         private readonly ILogger<SchedulerConsumer> _logger;
         private readonly IServiceBusSubscriptionClientFactory _clientFactory;
         private readonly IServiceScopeFactory _scopeFactory;
-        private readonly ServiceBusConfiguration _options;
+        private readonly SchedulerServiceBusConfiguration _options;
+        private readonly ISchedulerResponseProducer _responseProducer;
 
         private ISubscriptionClient _subscriptionClient;
 
-        public SchedulerConsumer(ILogger<SchedulerConsumer> logger, IServiceBusSubscriptionClientFactory serviceBusSubscriptionClientFactory, IOptions<ServiceBusConfiguration> options, IServiceScopeFactory scopeFactory)
+        public SchedulerConsumer(ILogger<SchedulerConsumer> logger, IServiceBusSubscriptionClientFactory serviceBusSubscriptionClientFactory, IOptions<SchedulerServiceBusConfiguration> options, IServiceScopeFactory scopeFactory, ISchedulerResponseProducer responseProducer)
         {
             _logger = logger;
             _clientFactory = serviceBusSubscriptionClientFactory;
             _scopeFactory = scopeFactory;
+            _responseProducer = responseProducer;
             _options = options.Value;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _subscriptionClient = await _clientFactory.CreateSubscriptionClientAsync(_options.Endpoint, "Scheduler", AppDomain.CurrentDomain.FriendlyName, AppDomain.CurrentDomain.FriendlyName, _options.LockDurationMinutes);
+            _subscriptionClient = await _clientFactory.CreateSubscriptionClientAsync(_options.ServiceBusEndpoint, _options.ServiceBusTopicName, AppDomain.CurrentDomain.FriendlyName, _options.MicroServiceConsumerLabel, _options.LockDurationMinutes);
             _subscriptionClient.RegisterMessageHandler(ConsumeMessage, new MessageHandlerOptions(LogMessageHandlerException) { AutoComplete = true, MaxConcurrentCalls = 1 });
         }
 
@@ -84,7 +88,9 @@ namespace Frank.Scheduler.Client.ServiceBus.Consumers
 
             response.Finished = DateTime.UtcNow;
 
-            _subscriptionClient.se
+            await _responseProducer.ProduceMessage(response, trigger.CallbackLabel);
+
+            await Task.CompletedTask;
         }
     }
 }

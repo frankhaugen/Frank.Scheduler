@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.ServiceBus;
+﻿using Frank.Scheduler.Models.Messages;
+using Microsoft.Azure.ServiceBus;
 using Newtonsoft.Json;
 using System;
 using System.Text;
@@ -6,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Frank.Scheduler.Client.ServiceBus.Producers
 {
-    public class SchedulerResponseProducer
+    public class SchedulerResponseProducer : ISchedulerResponseProducer
     {
-        public async Task ProduceMessage(object message, string label)
+        public async Task ProduceMessage(SchedulerCallbackMessage message, string label)
         {
             var topicClient = new TopicClient("Endpoint", "topicname");
 

@@ -1,8 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.ServiceBus;
+﻿using Microsoft.Azure.ServiceBus;
 using Microsoft.Extensions.Options;
+using System;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Frank.Scheduler.Api.ServiceBus
 {
@@ -15,20 +16,30 @@ namespace Frank.Scheduler.Api.ServiceBus
             _options = options.Value;
         }
 
-        public async Task SendMessage(string message) => await SendMessage(Encoding.UTF8.GetBytes(message));
-
-        private async Task SendMessage(byte[] body)
-        {
-            var message = new Message
+        public async Task<Message> SendMessage<T>(Guid messageId, string messageLabel, T body) =>
+            await SendMessage(new Message(JsonSerializer.SerializeToUtf8Bytes(body))
             {
-                Body = body,
+                Label = messageLabel,
                 ContentType = "application/json",
-                TimeToLive = TimeSpan.FromHours(24),
-                Label = _options.Filter
-            };
+                MessageId = messageId.ToString(),
+                TimeToLive = TimeSpan.FromHours(1)
+            });
 
+        public async Task<Message> SendMessage(Guid messageId, string messageLabel, string messageBody) =>
+            await SendMessage(new Message(Encoding.UTF8.GetBytes(messageBody))
+            {
+                Label = messageLabel,
+                ContentType = "application/json",
+                MessageId = messageId.ToString(),
+                TimeToLive = TimeSpan.FromHours(1)
+            });
+
+        private async Task<Message> SendMessage(Message message)
+        {
             var topicClient = new TopicClient(_options.Endpoint, _options.TopicName, RetryPolicy.Default);
             await topicClient.SendAsync(message);
+
+            return message;
         }
     }
 }

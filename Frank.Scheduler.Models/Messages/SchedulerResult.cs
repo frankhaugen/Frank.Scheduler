@@ -4,7 +4,14 @@ namespace Frank.Scheduler.Models.Messages
 {
     public class SchedulerTriggerMessage
     {
-        public Guid Id { get; set; }
+        public SchedulerTriggerMessage(Guid id, string callbackLabel)
+        {
+            Id = id;
+            CallbackLabel = callbackLabel;
+        }
+
+        public Guid Id { get; }
+        public string CallbackLabel { get; }
     }
 
     public class SchedulerResult

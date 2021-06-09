@@ -10,6 +10,20 @@
     "profiles": {
         "Frank.Scheduler.Api (Development)": {
             "commandName": "Project",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "applicationUrl": "http://localhost:5110"
+        },
+        "Frank.Scheduler.Api (Test)": {
+            "commandName": "Project",
+            "environmentVariables": {
+                "ASPNETCORE_ENVIRONMENT": "Test"
+            },
+            "applicationUrl": "http://localhost:5110"
+        },
+        "Swagger (Development)": {
+            "commandName": "Project",
             "launchBrowser": true,
             "launchUrl": "swagger",
             "environmentVariables": {
@@ -17,7 +31,7 @@
             },
             "applicationUrl": "http://localhost:5110"
         },
-        "Frank.Scheduler.Api (Test)": {
+        "Swagger (Test)": {
             "commandName": "Project",
             "launchBrowser": true,
             "launchUrl": "swagger",
