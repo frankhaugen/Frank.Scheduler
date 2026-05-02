@@ -1,0 +1,12 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Frank.Scheduler.Api/Frank.Scheduler.Api.csproj" />
+  <Project Path="Frank.Scheduler.Client/Frank.Scheduler.Client.csproj" />
+  <Project Path="Frank.Scheduler.Models/Frank.Scheduler.Models.csproj" />
+  <Project Path="Frank.Scheduler.Tests/Frank.Scheduler.Tests.csproj" />
+  <Project Path="Frank.Scheduler/Frank.Scheduler.csproj" />
+</Solution>
